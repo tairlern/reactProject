@@ -1,14 +1,19 @@
 import { observable, makeObservable, action } from 'mobx';
 
+
 class MainStore {
     isLogin = false;
-    isStatus=401;
+    // isStatus=401;
+    details=[];
     constructor() {
         makeObservable(this, {
             isLogin: observable, 
-            isStatus:observable,
+            // isStatus:observable,
+            details:observable,
             setIsLogin: action,
             saveLogin:action,
+            getDetalise:action,
+            saveDetalise:action,
         })
     }
     setIsLogin = (val) => {
@@ -31,14 +36,40 @@ class MainStore {
       
           if (response.status === 200) {
             this.isLogin=true;
-            this.isStatus=200;
+            // this.isStatus=200;
+            // localStorage.setItem([isLog,"true"]);
               console.log(this.isLogin)
        }       
-    // else{
-    //   this.isLogin=false;
-    //   this.isStatus=401;
-    // }
+   
 }
-}
+saveDetalise=async(name,address,phone,owner,logo,description)=>{
+  console.log("enter save saveDetalise ")
+  console.log(name,address,phone,owner,logo,description)
+  const response = await fetch("http://localhost:8787/businessData", {
+      method: "POST",
+      body: JSON.stringify({
+        name,address,phone,owner,logo,description
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    // console.log(response.status)
+    this.details=response;
+ }       
 
+
+
+  getDetalise=async()=>{
+    console.log("enter save detalis")
+    // console.log()
+   const response = await fetch("http://localhost:8787/businessData");
+   this.details= await response.json();
+//    this.details=JSON.parse(data);
+// console.log(this.details)
+
+   }  
+
+
+}
 export default new MainStore();

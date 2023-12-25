@@ -13,13 +13,15 @@ import Button from '@mui/material/Button';
 import './LogIn.css'
 import MainStore from '../../store/MainStore';
 import Admin from '../admin/Admin';
+import { observer } from 'mobx-react-lite';
 
   
-function LogIn() { 
+const LogIn=(observer(()=> { 
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false);
     const handleLogin = ()=> {
+  
       MainStore.saveLogin(name,password);
      setName("")//איפוס הנתונים
      setPassword("")
@@ -85,5 +87,5 @@ function LogIn() {
 
   )
 
-}
+}))
 export default LogIn
